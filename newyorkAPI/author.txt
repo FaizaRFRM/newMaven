@@ -1,3 +1,7 @@
+https://api.nytimes.com/svc/books/v3/reviews.json?author=Stephen+King&api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA
+
+
+
 {
    "status":"OK",
    "copyright":"Copyright (c) 2023 The New York Times Company.  All Rights Reserved.",

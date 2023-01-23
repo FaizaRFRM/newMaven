@@ -14,14 +14,10 @@ public class MainAPIs  {
 			boolean exit = true;
 			while (exit) {
 				Scanner sc = new Scanner(System.in);
-				System.out.println("\t \tChoose One Option:\t \t");
-				System.out.println("\t\t 1.read JSON file in concol ");
-				System.out.println("\t\t 2.ReadOrderly ");
-				System.out.println("\t\t 3. createTable ");
-				System.out.println("\t\t 4. insert ");
-				System.out.println("\t\t 5. readFromTable ");
-				System.out.println("\t\t 6. updateById ");
-				System.out.println("\t\t 7. deleteById ");
+				System.out.println("\t \tChoose One table:\t \t");
+				System.out.println("\t\t 1.Artical Table ");
+				System.out.println("\t\t 2.section Table ");
+				System.out.println("\t\t 3. Author Table ");
 				System.out.println(" *********************************************** ");
 				Scanner scanner = new Scanner(System.in);
 
@@ -29,30 +25,16 @@ public class MainAPIs  {
 				switch (option) {
 
 				case 1:
-					ArticalAPI apis=new ArticalAPI();
-					apis.ReadJsonFile();
+					ArticalAPI.main();
 					break;
 
 				case 2:
-//					MVNMain.ReadOrderly();
+					sectionAPI.main();
 					break;
 
 				case 3:
-//					MVNMain.createTable();
+					AuthorAPI.main();
 
-					break;
-				case 4:
-//				MVNMain.insert();
-
-					break;
-				case 5:
-//				MVNMain.readFromTable();
-					break;
-				case 6:
-//				MVNMain.updateById();
-					break;
-				case 7:
-//				MVNMain.deleteById();
 					break;
 				}
 			}
