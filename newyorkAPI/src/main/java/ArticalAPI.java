@@ -20,7 +20,7 @@ public class ArticalAPI {
 			boolean exit = true;
 			while (exit) {
 				Scanner sc = new Scanner(System.in);
-				System.out.println("\t \tChoose One Option:\t \t");
+				System.out.println("\t \t Artical Table :\t \t");
 				System.out.println("\t\t 1.read JSON file in concol ");
 				System.out.println("\t\t 2.ReadOrderly ");
 				System.out.println("\t\t 3. createTable ");
@@ -75,8 +75,9 @@ public class ArticalAPI {
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
 		Gson gn = new Gson();
-		artical[] useGson = gn.fromJson(response.body(), artical[].class);
-		for (artical RAC : useGson) {
+		artical RAC = gn.fromJson(response.body(), artical.class);
+		for (int i=0;i<response.body().length();i++) {
+//		for (artical RAC : useGson) {
 //			status,copyright,response{docs(web_url,source,keywords[(name,value,rank,major)],pub_date,section_name,subsection_name,byline{original,person[]},_id,uri)}
 //			private  String status;
 //		     private  String copyright;
@@ -105,12 +106,15 @@ public class ArticalAPI {
 //			private Date pub_date;
 //			private String section_name;
 //			private String subsection_name;
+			
 			String sql = ("CREATE TABLE articalTable(" + "id int Primary Key AUTO_INCREMENT,"
 					+ "status varchar(225)," 
 					+ "copyright varchar(225)," + "web_url varchar(225),"
-					+ "source varchar(225)," + "pub_date date,"
+					+ "source varchar(225)," + "pub_date varchar(50),"
 					+ "section_name varchar(225)," 
-					 + "subsection_name varchar(225))");
+					+ "subsection_name varchar(225),"
+					+ "Aurthor_id int REFERENCES AuthorTable(id),"
+					+"section_id int REFERENCES sectionTable(id))");
 			
 			Driver driver = (Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 
@@ -135,14 +139,16 @@ public class ArticalAPI {
 	
 	
 	public static void insert() throws Exception {
+		Scanner sc= new Scanner(System.in);
 		String jsonUrl = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA";
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(jsonUrl)).build();
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
 		Gson gn = new Gson();
-		artical[] useGson = gn.fromJson(response.body(), artical[].class);
-		for (artical RAC : useGson) {
+		artical RAC = gn.fromJson(response.body(), artical.class);
+		for (int i=0;i<response.body().length();i++) {
+//		for (artical RAC : useGson) {
 			final String url = "jdbc:mysql://localhost:3306/APIs";
 
 			final String user = "root";
@@ -154,15 +160,35 @@ public class ArticalAPI {
 //			    private  String copyright;
 //				private String web_url;
 //				private String source;
-//				private Date pub_date;
+//				private String pub_date;
 //				private String section_name;
 //				private String subsection_name;
+				
+				
+			System.out.println("what author you want?");
+			String  name;
+			name = sc.next();
+			System.out.println();
+			String query1=("Select id from AuthorTable where byline="+name);
+			System.out.println("what section and subsection  you want?");
+			String  sect;
+			String  subsect;
+			sect = sc.next();
+			subsect = sc.next();
+			System.out.println();
+			String query2=("Select id from AuthorTable where section="+sect+"subsection="+subsect);
 			
-				String sql = "insert into articalTable (status,copyright,web_url,source,pub_date,section_name,subsection_name)"
-						+ "values ('" +RAC.getStatus() + "','" + RAC.getCopyright() + "','" + RAC.getResponse().getDocs()[0].getWeb_url()+ "','" 
-						+ RAC.getResponse().getDocs()[0].getSource()+ "','" 
-						+ RAC.getResponse().getDocs()[0].getPub_date()+ "','" + RAC.getResponse().getDocs()[0].getSection_name()
-								+ "','" + RAC.getResponse().getDocs()[0].getSubsection_name()+"')";
+			
+			
+			
+				String sql = "insert into articalTable (status,copyright,web_url,source,pub_date,section_name,subsection_name,Aurthor_id,section_id)"
+						+ "values ('" +RAC.getStatus()+ "','" 
+						+ RAC.getCopyright() + "','" 
+						+ RAC.getResponse().getDocs()[i].getWeb_url()+ "','" 
+						+ RAC.getResponse().getDocs()[i].getSource()+ "','" 
+						+ RAC.getResponse().getDocs()[i].getPub_date()+ "','" 
+						+ RAC.getResponse().getDocs()[i].getSection_name()+ "','" 
+						+ RAC.getResponse().getDocs()[i].getSubsection_name()+"')";
 
 				Driver driver = (Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 
@@ -186,64 +212,8 @@ public class ArticalAPI {
 			}
 
 		}
-	}
-//	
-//	public static void readFromTable(){
-//
-//		final String url = "jdbc:mysql://localhost:3306/APIs";
-//		   final String user = "root";
-//		   final String pass = "root";
-//		   
-//		   
-//		   
-//		  String QUERY = "SELECT * FROM articalTable";
-//
-//		      Connection conn=null;
-//		      
-//		 try {
-//			 conn = DriverManager.getConnection(url, user, pass);
-//		 Driver driver = (Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-//         Statement stmt = conn.createStatement();
-//	     DriverManager.registerDriver(driver);
-//	     ResultSet rs=stmt.executeQuery(QUERY);
-//			 while(rs.next()) {
-////					status,copyright,response{docs(web_url,source,keywords[(name,value,rank,major)],pub_date,section_name,subsection_name,byline{original,person[]},_id,uri)}
-////					private  String status;
-////				     private  String copyright;
-////					private String web_url;
-////					private String source;
-////					private Date pub_date;
-////					private String section_name;
-////					private String subsection_name; 
-//				 
-//				 
-//				int id=rs.getInt("id");
-//				String status=rs.getString("status");
-//				String copyright=rs.getString("copyright");
-//				String web_url=rs.getString("web_url");
-//				String source=rs.getString("source");
-//				Date pub_date=rs.getDate("pub_date");
-//				String section_name=rs.getString("section_name");
-//				String subsection_name=rs.getString("subsection_name");
-//				
-//				
-//				
-//			     System.out.println("id :" + id);
-//			     System.out.println("status :" +status);
-//			     System.out.println("copyright" +copyright);
-//			     System.out.println("web_url" +web_url);
-//			     System.out.println("source" +source);
-//			     System.out.println("pub_date" +pub_date);
-//			     System.out.println("section_name"+section_name);
-//			     System.out.println("subsection_name"+subsection_name);
-//			     System.out.println("===========================================================");
-//			   
-//			 }
-//			 conn.close() ;
-//		 }  catch (Exception ex) {
-//	           
-//	            System.err.println(ex);
-//   }
-//    }
+//	}
+
+    }
 
 }

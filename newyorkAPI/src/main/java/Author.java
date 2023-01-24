@@ -3,8 +3,16 @@ public class Author {
 	String status;
 	String copyright;
 	int num_results;
-	results[] Results;
+	result[] results;
+
 	
+	
+	public result[] getResults() {
+		return results;
+	}
+	public void setResults(result[] results) {
+		results = results;
+	}
 	
 	public String getStatus() {
 		return status;
@@ -24,11 +32,6 @@ public class Author {
 	public void setNum_results(int num_results) {
 		this.num_results = num_results;
 	}
-	public results[] getResults() {
-		return Results;
-	}
-	public void setResults(results[] results) {
-		Results = results;
-	}
+	
 	
 }

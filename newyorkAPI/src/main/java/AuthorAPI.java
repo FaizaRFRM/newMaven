@@ -18,7 +18,7 @@ public class AuthorAPI {
 			boolean exit = true;
 			while (exit) {
 				Scanner sc = new Scanner(System.in);
-				System.out.println("\t \tChoose One Option:\t \t");
+				System.out.println("\t \tAurthor table:\t \t");
 				System.out.println("\t\t 1.read JSON file in concol ");
 				System.out.println("\t\t 2.ReadOrderly ");
 				System.out.println("\t\t 3. createTable ");
@@ -58,7 +58,7 @@ public class AuthorAPI {
 	}
 	public static void ReadJsonFile() throws Exception {
 
-		String jsonUrl = "https://api.nytimes.com/svc/books/v3/reviews.json?author=Stephen+King&api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA\r\n";
+		String jsonUrl = "https://api.nytimes.com/svc/books/v3/reviews.json?author=Stephen+King&api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA";
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(jsonUrl)).build();
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -66,14 +66,16 @@ public class AuthorAPI {
 
 	}
 	public static void ReadOrderly() throws Exception {
-		String jsonUrl = "https://api.nytimes.com/svc/books/v3/reviews.json?author=Stephen+King&api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA\r\n";
+		String jsonUrl = "https://api.nytimes.com/svc/books/v3/reviews.json?author=Stephen+King&api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA";
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(jsonUrl)).build();
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+//		Gson gn = new Gson();
+//		artical RAC = gn.fromJson(response.body(), artical.class);
 		Gson gn = new Gson();
-		section[] useGson = gn.fromJson(response.body(), section[].class);
-		for (section RAC : useGson) {
+		Author RAC = gn.fromJson(response.body(), Author.class);
+		for (int i=0;i<response.body().length();i++) {
+//		for (section RAC : useGson) {
 //		String status;
 //			String copyright;
 //			int num_results;
@@ -85,7 +87,7 @@ public class AuthorAPI {
 			System.out.println("status" + RAC.getStatus());
 			System.out.println("copyright" + RAC.getCopyright());
 			System.out.println("num_results" + RAC.getNum_results());
-			System.out.println("Results" + RAC.getResults()[0]);
+			System.out.println("Results" + RAC.getResults()[i]);
 		}
 	}
 	
@@ -145,14 +147,15 @@ public class AuthorAPI {
 	
 	
 	public static void insert() throws Exception {
-		String jsonUrl = "https://api.nytimes.com/svc/books/v3/reviews.json?author=Stephen+King&api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA\r\n";
+		String jsonUrl = "https://api.nytimes.com/svc/books/v3/reviews.json?author=Stephen+King&api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA";
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(jsonUrl)).build();
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
 		Gson gn = new Gson();
-		section[] useGson = gn.fromJson(response.body(), section[].class);
-		for (section RAC : useGson) {
+		Author RAC = gn.fromJson(response.body(), Author.class);
+		for (int i=0;i<response.body().length();i++) {
+//		for (Author RAC : useGson) {
 			final String url = "jdbc:mysql://localhost:3306/APIs";
 
 			final String user = "root";
@@ -173,16 +176,14 @@ public class AuthorAPI {
 //				String  isbn13[];
 			
 				String sql = "insert into AuthorTable (status,copyright,num_results,byline,book_title,book_author,uuid,isbn13)"
-						+ "values ('" +RAC.getStatus() + "','" 
+						+ "values ('" +RAC.getStatus()+ "','" 
 						+ RAC.getCopyright() +"','" 
-						+ RAC.getLast_updated()+"','" 
-						+ RAC.getNum_results()+"','"
-						+ RAC.getResults()[0].getSection()+ "','" 
-						+ RAC.getResults()[0].getSubsection()+ "','" 
-						+ RAC.getResults()[0].getTitle()+ "','" 
-						+ RAC.getResults()[0].getTitle()+ "','" 
-						+ RAC.getResults()[0].getUri()+ "','" 
-						+ RAC.getResults()[0].getByline()+"')";
+						+ RAC. getNum_results()+"','"
+						+ RAC.getResults()[i].getByline()+"','"
+						+ RAC.getResults()[i].getBook_title()+ "','" 
+						+ RAC.getResults()[i].getBook_author()+ "','" 
+						+ RAC.getResults()[i].getUuid()+ "','" 
+						+ RAC.getResults()[i].getIsbn13()+"')";
 
 				Driver driver = (Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 

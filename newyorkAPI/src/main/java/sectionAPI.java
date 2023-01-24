@@ -19,7 +19,7 @@ public class sectionAPI {
 			boolean exit = true;
 			while (exit) {
 				Scanner sc = new Scanner(System.in);
-				System.out.println("\t \tChoose One Option:\t \t");
+				System.out.println("\t \tSection Table:\t \t");
 				System.out.println("\t\t 1.read JSON file in concol ");
 				System.out.println("\t\t 2.ReadOrderly ");
 				System.out.println("\t\t 3. createTable ");
@@ -60,8 +60,7 @@ public class sectionAPI {
 	}
 	public static void ReadJsonFile() throws Exception {
 
-		String jsonUrl = "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA\r\n"
-				+ "";
+		String jsonUrl = "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA";
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(jsonUrl)).build();
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -69,20 +68,21 @@ public class sectionAPI {
 
 	}
 	public static void ReadOrderly() throws Exception {
-		String jsonUrl = "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA\r\n"
-				+ "";
+		String jsonUrl = "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA";
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(jsonUrl)).build();
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
 		Gson gn = new Gson();
-		section[] useGson = gn.fromJson(response.body(), section[].class);
-		for (section RAC : useGson) {
+		section RAC = gn.fromJson(response.body(), section.class);
+		for (int i=0;i<response.body().length();i++) {
+
+//		for (section RAC : useGson) {
 //			String status;
 //			String copyright;
 //			String last_updated;
 //			int num_results;
-//			results[] Results;
+//			results[] results;
 			
 			
 			
@@ -90,7 +90,7 @@ public class sectionAPI {
 			System.out.println("copyright" + RAC.getCopyright());
 			System.out.println("last_updated" + RAC.getLast_updated());
 			System.out.println("num_results" + RAC.getNum_results());
-			System.out.println("Results" + RAC.getResults()[0]);
+			System.out.println("Results" + RAC.getResults()[i]);
 		}
 	}
 	
@@ -117,13 +117,13 @@ public class sectionAPI {
 			String sql = ("CREATE TABLE sectionTable(" + "id int Primary Key AUTO_INCREMENT,"
 					+ "status varchar(225)," 
 					+ "copyright varchar(225),"
-					+ "last_updated varchar(225)," + "pub_date date,"
+					+ "last_updated varchar(225),"
 					+ "num_results Integer," 
 					+ "section varchar(225)," 
 					+ "subsection varchar(225)," 
 					+ "title varchar(225)," 
 					+ "uri varchar(225)," 
-					 + "byline varchar(225))");
+				    + "byline varchar(225))");
 			
 			Driver driver = (Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 
@@ -148,15 +148,14 @@ public class sectionAPI {
 	
 	
 	public static void insert() throws Exception {
-		String jsonUrl = "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA\r\n"
-				+ "";
+		String jsonUrl = "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=UD8wewzN6GNwnrbBU19uCJvj6T0eK8JA";
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(jsonUrl)).build();
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
 		Gson gn = new Gson();
-		section[] useGson = gn.fromJson(response.body(), section[].class);
-		for (section RAC : useGson) {
+		section RAC = gn.fromJson(response.body(), section.class);
+		for (int i=0;i<response.body().length();i++) {
 			final String url = "jdbc:mysql://localhost:3306/APIs";
 
 			final String user = "root";
@@ -170,7 +169,6 @@ public class sectionAPI {
 //				String section;
 //				String subsection;
 //				String title;
-//				String url;
 //				String uri;
 //				String byline;
 			
@@ -179,12 +177,11 @@ public class sectionAPI {
 						+ RAC.getCopyright() +"','" 
 						+ RAC.getLast_updated()+"','" 
 						+ RAC.getNum_results()+"','"
-						+ RAC.getResults()[0].getSection()+ "','" 
-						+ RAC.getResults()[0].getSubsection()+ "','" 
-						+ RAC.getResults()[0].getTitle()+ "','" 
-						+ RAC.getResults()[0].getTitle()+ "','" 
-						+ RAC.getResults()[0].getUri()+ "','" 
-						+ RAC.getResults()[0].getByline()+"')";
+						+ RAC.getResults()[i].getSection()+ "','" 
+						+ RAC.getResults()[i].getSubsection()+ "','" 
+						+ RAC.getResults()[i].getTitle()+ "','"
+						+ RAC.getResults()[i].getUri()+ "','" 
+						+ RAC.getResults()[i].getByline()+"')";
 
 				Driver driver = (Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 
@@ -209,68 +206,5 @@ public class sectionAPI {
 
 		}
 	}
-	
-//	public static void readFromTable(){
-//
-//		final String url = "jdbc:mysql://localhost:3306/APIs";
-//		   final String user = "root";
-//		   final String pass = "root";
-//		   
-//		   
-//		   
-//		  String QUERY = "SELECT * FROM sectionTable";
-//
-//		      Connection conn=null;
-//		      
-//		 try {
-//			 conn = DriverManager.getConnection(url, user, pass);
-//		 Driver driver = (Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-//         Statement stmt = conn.createStatement();
-//	     DriverManager.registerDriver(driver);
-//	     ResultSet rs=stmt.executeQuery(QUERY);
-//			 while(rs.next()) {
-////					String status;
-////					String copyright;
-////					String last_updated;
-////					int num_results;
-////					String section;
-////					String subsection;
-////					String title;
-////					String uri;
-////					String byline;
-//				 
-//				int id=rs.getInt("id");
-//				String status=rs.getString("status");
-//				String copyright=rs.getString("copyright");
-//				String last_updated=rs.getString("last_updated");
-//				int num_results=rs.getInt("num_results");
-//				String section=rs.getString("section");
-//				String subsection=rs.getString("subsection");
-//				String title=rs.getString("title");
-//				String uri=rs.getString("uri");
-//				String byline=rs.getString("byline");
-//
-//				
-//				
-//				
-//			     System.out.println("id :" + id);
-//			     System.out.println("status :" +status);
-//			     System.out.println("copyright" +copyright);
-//			     System.out.println("last_updated" +last_updated);
-//			     System.out.println("num_results" +num_results);
-//			     System.out.println("section" +section);
-//			     System.out.println("subsection"+subsection);
-//			     System.out.println("title"+title);
-//			     System.out.println("uri"+uri);
-//			     System.out.println("byline"+byline);
-//			     System.out.println("===========================================================");
-//			   
-//			 }
-//			 conn.close() ;
-//		 }  catch (Exception ex) {
-//	           
-//	            System.err.println(ex);
-//   }
-//    }
-//	
+
 }

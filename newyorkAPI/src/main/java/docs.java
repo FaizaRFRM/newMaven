@@ -4,9 +4,16 @@ public class docs {
 //	status,copyright,response,docs(web_url,source,pub_date,section_name,subsection_name,byline{original,organization},_id,uri),
 	private String web_url;
 	private String source;
-	private Date pub_date;
+	private String pub_date;
 	private String section_name;
 	private String subsection_name;
+	
+	public String getPub_date() {
+		return pub_date;
+	}
+	public void setPub_date(String pub_date) {
+		this.pub_date = pub_date;
+	}
 	
 	
 	public String getWeb_url() {
@@ -20,12 +27,6 @@ public class docs {
 	}
 	public void setSource(String source) {
 		this.source = source;
-	}
-	public Date getPub_date() {
-		return pub_date;
-	}
-	public void setPub_date(Date pub_date) {
-		this.pub_date = pub_date;
 	}
 	public String getSection_name() {
 		return section_name;

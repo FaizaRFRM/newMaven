@@ -5,7 +5,7 @@ public class artical {
 //	status,copyright,response,docs(web_url,source,pub_date,section_name,subsection_name,byline{original,person[]},_id,uri),
      private  String status;
      private  String copyright;
-     private  response Response;
+     private  response response;
      
      
      public String getStatus() {
@@ -21,10 +21,10 @@ public class artical {
 		this.copyright = copyright;
 	}
 	public response getResponse() {
-		return Response;
+		return response;
 	}
 	public void setResponse(response response) {
-		Response = response;
+		response = response;
 	}
 	
     

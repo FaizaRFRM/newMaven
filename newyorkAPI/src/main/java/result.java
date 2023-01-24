@@ -4,7 +4,7 @@ public class result {
 	String book_title;
 	String book_author;
 	String uuid;
-	String  isbn13[];
+	String[] isbn13;
 	
 	
 	public String getByline() {

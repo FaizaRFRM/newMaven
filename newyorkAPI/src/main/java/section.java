@@ -4,7 +4,7 @@ public class section {
 	String copyright;
 	String last_updated;
 	int num_results;
-	results[] Results;
+	results[] results;
 	
 	public String getStatus() {
 		return status;
@@ -31,10 +31,10 @@ public class section {
 		this.num_results = num_results;
 	}
 	public results[] getResults() {
-		return Results;
+		return results;
 	}
 	public void setResults(results[] results) {
-		Results = results;
+		results = results;
 	}
 	
 }
